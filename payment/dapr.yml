@@ -1,0 +1,8 @@
+apiVersion: dapr.io/v1alpha1
+kind: Configuration
+metadata:
+  name: payment-service
+spec:
+  httpPort: 8001
+  appPort: 8001
+  daprPort: 3501
