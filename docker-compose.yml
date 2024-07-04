@@ -9,9 +9,9 @@ services:
     ports:
       - "2181:2181"
 
-  kafka:
+  kafka-broker:
     image: wurstmeister/kafka:latest
-    container_name: kafka
+    container_name: kafka-broker
     networks:
       - kafka-net
     ports:
@@ -19,7 +19,7 @@ services:
     environment:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT
       KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
-      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka-broker:9092
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_BROKER_ID: 1
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
@@ -36,7 +36,7 @@ services:
     networks:
       - kafka-net
     depends_on:
-      - kafka
+      - kafka-broker
     volumes:
       - ./order/dapr.yml:/app/config/dapr.yml  # Mount dapr.yml for order service
 
@@ -50,7 +50,7 @@ services:
     networks:
       - kafka-net
     depends_on:
-      - kafka
+      - kafka-broker
     volumes:
       - ./payment/dapr.yml:/app/config/dapr.yml  # Mount dapr.yml for payment service
 
